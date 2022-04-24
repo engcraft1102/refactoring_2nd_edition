@@ -8,7 +8,7 @@ function statement(invoice, plays) {
     minumumFractionDigits: 2,
   }).format;
 
-  for (let perf of invoice.performnaces) {
+  for (let perf of invoice.performances) {
     const play = plays[perf.playID];
     let thisAmount = 0;
 
@@ -35,8 +35,12 @@ function statement(invoice, plays) {
     if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5);
 
     // 청구 내역 출력
-    result += `총액: ${format(totalAmount / 100)}\n`;
-    result += `적립 포인트: ${volumeCredits}점\n`;
-    return result;
+    result += `${play.name}: ${format(thisAmount / 100)} (${
+      perf.audience
+    }석)\n`;
+    totalAmount += thisAmount;
   }
+  result += `총액: ${format(totalAmount / 100)}\n`;
+  result += `적립 포인트: ${volumeCredits}점\n`;
+  return result;
 }
